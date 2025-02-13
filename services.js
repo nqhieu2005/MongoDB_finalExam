@@ -40,15 +40,21 @@ async function removeOrder(collection, orderid) {
 
 async function readAllOrders(collection) {
     const orders = await collection.find().toArray();
-    console.log("No\tProduct name\tPrice\tQuantity\tTotal");
-    let productCounter = 1; 
+    const tableData = [];
+
     orders.forEach((order) => {
         order.products.forEach((product) => {
-            const total = product.price * product.quantity;
-            console.log(`${productCounter}\t${product.product_name}\t${product.price}\t${product.quantity}\t${total}`);
-            productCounter++; 
+            tableData.push({
+                No: tableData.length + 1,
+                "Product Name": product.product_name,
+                Price: product.price,
+                Quantity: product.quantity,
+                Total: product.price * product.quantity,
+            });
         });
     });
+
+    console.table(tableData);
 }
 
 async function calculateTotalAmount(collection) {
